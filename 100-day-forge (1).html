@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 DAY FORGE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── THEME TOKENS ─── */
+:root {
+  --bg:        #07070A;
+  --s1:        #0E0E15;
+  --s2:        #161620;
+  --s3:        #1E1E2C;
+  --border:    #252535;
+  --border-hi: #363650;
+  --accent:    #E8400A;
+  --accent2:   #FF6230;
+  --accent-dim:rgba(232,64,10,.10);
+  --accent-glo:0 0 28px rgba(232,64,10,.28), 0 0 56px rgba(232,64,10,.10);
+  --blue:      #1C5FCC;
+  --blue-hi:   #4A88F0;
+  --gold:      #CC8A00;
+  --gold-hi:   #EEA800;
+  --green:     #16783A;
+  --green-hi:  #20A050;
+  --t1:        #EDEAE0;
+  --t2:        #857D73;
+  --t3:        #45403A;
+  --ff-h:      'Oswald',sans-serif;
+  --ff-b:      'Space Grotesk',sans-serif;
+  --modal-bg:  rgba(0,0,0,.82);
+  --input-bg:  #0E0E15;
+  --input-border: #363650;
+}
+[data-theme="light"] {
+  --bg:        #F5F3EE;
+  --s1:        #EEEBE4;
+  --s2:        #E6E2D9;
+  --s3:        #DDD9CE;
+  --border:    #C8C4BA;
+  --border-hi: #A8A49A;
+  --accent:    #D03A08;
+  --accent2:   #F05020;
+  --accent-dim:rgba(208,58,8,.10);
+  --accent-glo:0 0 28px rgba(208,58,8,.20), 0 0 56px rgba(208,58,8,.08);
+  --blue-hi:   #2860C0;
+  --gold-hi:   #B07800;
+  --green-hi:  #167830;
+  --t1:        #1A1714;
+  --t2:        #5A5650;
+  --t3:        #8A8680;
+  --modal-bg:  rgba(0,0,0,.55);
+  --input-bg:  #EEEBE4;
+  --input-border: #A8A49A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  background-image:
+    repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(128,128,128,.04) 3px,rgba(128,128,128,.04) 6px),
+    repeating-linear-gradient(-45deg,transparent,transparent 3px,rgba(128,128,128,.025) 3px,rgba(128,128,128,.025) 6px);
+  color:var(--t1);
+  font-family:var(--ff-b);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition: background .25s, color .25s;
+}
+
+/* ─── HEADER ─── */
+.hdr{
+  background:var(--s1);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  transition: background .25s, border-color .25s;
+}
+.hdr-in{
+  max-width:1440px;margin:auto;
+  padding:18px clamp(16px,4vw,52px);
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+}
+.logo-wrap{display:flex;flex-direction:column;gap:0;flex-shrink:0;}
+.logo-main{
+  font-family:var(--ff-h);
+  font-size:clamp(1.6rem,3.5vw,2.5rem);
+  font-weight:700;letter-spacing:.12em;
+  line-height:1;text-transform:uppercase;
+}
+.logo-main em{color:var(--accent);font-style:normal;}
+.logo-sub{
+  font-family:var(--ff-h);
+  font-size:.6rem;letter-spacing:.3em;color:var(--t3);
+  text-transform:uppercase;margin-top:5px;
+}
+.hdr-progress{flex:1;min-width:180px;}
+.prog-label{
+  display:flex;justify-content:space-between;
+  font-family:var(--ff-h);font-size:.65rem;letter-spacing:.18em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:7px;
+}
+.prog-label b{color:var(--accent2);font-weight:600;}
+.prog-track{
+  height:5px;background:var(--s3);
+  border:1px solid var(--border);overflow:hidden;
+}
+.prog-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .9s cubic-bezier(.23,1,.32,1);
+  position:relative;
+}
+.prog-fill::after{
+  content:'';position:absolute;right:0;top:0;height:100%;width:30px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25));
+  animation:shim 2s ease-in-out infinite;
+}
+@keyframes shim{0%,100%{opacity:0}50%{opacity:1}}
+
+/* ─── THEME TOGGLE ─── */
+.theme-toggle{
+  display:flex;align-items:center;gap:8px;
+  background:var(--s2);border:1px solid var(--border);
+  padding:8px 14px;cursor:pointer;flex-shrink:0;
+  font-family:var(--ff-h);font-size:.6rem;letter-spacing:.15em;
+  color:var(--t2);text-transform:uppercase;
+  transition:all .15s;user-select:none;
+}
+.theme-toggle:hover{border-color:var(--border-hi);color:var(--t1);}
+.theme-toggle-icon{font-size:1rem;line-height:1;}
+
+/* ─── STATS ─── */
+.stats-bar{background:var(--s2);border-bottom:1px solid var(--border);transition:background .25s;}
+.stats-in{
+  max-width:1440px;margin:auto;
+  padding:0 clamp(16px,4vw,52px);
+  display:flex;overflow-x:auto;scrollbar-width:none;
+}
+.stats-in::-webkit-scrollbar{display:none;}
+.stat{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px 28px;border-right:1px solid var(--border);
+  min-width:max-content;gap:3px;flex-shrink:0;
+}
+.stat:first-child{padding-left:0;}
+.stat:last-child{border-right:none;}
+.stat-v{
+  font-family:var(--ff-h);font-size:1.65rem;font-weight:700;line-height:1;
+}
+.stat-v.or{color:var(--accent2);}
+.stat-v.go{color:var(--gold-hi);}
+.stat-v.bl{color:var(--blue-hi);}
+.stat-v.gr{color:var(--green-hi);}
+.stat-l{font-family:var(--ff-h);font-size:.58rem;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;}
+
+/* ─── PHASE NAV ─── */
+.phase-nav{max-width:1440px;margin:0 auto;padding:30px clamp(16px,4vw,52px) 14px;display:flex;gap:10px;flex-wrap:wrap;}
+.phase-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;background:var(--s2);
+  border:1px solid var(--border);color:var(--t2);
+  cursor:pointer;font-family:var(--ff-h);
+  font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;
+  transition:all .18s;position:relative;overflow:hidden;
+  user-select:none;
+}
+.phase-btn::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:transparent;transition:background .18s;
+}
+.phase-btn:hover{border-color:var(--border-hi);color:var(--t1);}
+.phase-btn:hover::after{background:var(--t3);}
+.phase-btn.active{background:var(--s3);border-color:var(--accent);color:var(--t1);}
+.phase-btn.active::after{background:var(--accent);}
+.ph-num{font-size:.6rem;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(232,64,10,.25);padding:2px 7px;}
+.ph-range{font-size:.6rem;color:var(--t3);font-family:var(--ff-b);}
+
+/* ─── MAIN ─── */
+.main{max-width:1440px;margin:0 auto;padding:14px clamp(16px,4vw,52px) 60px;}
+.phase-hdr{
+  margin-bottom:20px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+}
+.phase-hdr-title{
+  font-family:var(--ff-h);
+  font-size:clamp(1.3rem,2.8vw,2rem);
+  font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+}
+.phase-hdr-sub{font-size:.82rem;color:var(--t2);letter-spacing:.04em;}
+
+/* ─── DAY GRID ─── */
+.day-grid{display:grid;gap:7px;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
+@media(max-width:480px){.day-grid{grid-template-columns:repeat(5,1fr);}}
+@media(min-width:481px) and (max-width:639px){.day-grid{grid-template-columns:repeat(6,1fr);}}
+
+/* ─── DAY CARD ─── */
+.day-card{
+  background:var(--s2);border:1px solid var(--border);
+  padding:clamp(10px,2vw,18px);cursor:pointer;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+  position:relative;overflow:hidden;
+  aspect-ratio:1;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.day-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--border);transition:background .18s;
+}
+.day-card:hover{border-color:var(--border-hi);transform:translateY(-2px);}
+.day-card:hover::before{background:var(--t2);}
+.dc-complete{background:var(--s1);opacity:.65;}
+.dc-complete::before{background:var(--green-hi) !important;}
+.dc-today{border-color:var(--accent) !important;box-shadow:var(--accent-glo);background:var(--s3);}
+.dc-today::before{background:var(--accent) !important;}
+.dc-future{opacity:.35;pointer-events:none;}
+.today-badge{
+  position:absolute;top:7px;right:7px;
+  font-family:var(--ff-h);font-size:.5rem;letter-spacing:.18em;
+  color:var(--accent);background:var(--accent-dim);
+  border:1px solid rgba(232,64,10,.3);padding:2px 5px;
+  text-transform:uppercase;
+}
+.day-num{
+  font-family:var(--ff-h);
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:700;line-height:1;color:var(--t1);
+}
+.dc-complete .day-num{color:var(--t3);}
+.dc-today .day-num{color:var(--accent);}
+.card-foot{display:flex;justify-content:space-between;align-items:flex-end;}
+.dots{display:flex;gap:3px;align-items:center;flex-wrap:wrap;}
+.dot{width:5px;height:5px;background:var(--border-hi);border-radius:50%;transition:background .15s;}
+.dot.done{background:var(--green-hi);}
+.dot.custom{background:var(--blue-hi);}
+.dot.custom.done{background:var(--green-hi);}
+.day-chk{font-size:.85rem;color:var(--green-hi);display:none;}
+.dc-complete .day-chk{display:block;}
+@media(max-width:480px){.card-foot{display:none;}.day-card{padding:8px 6px;}.day-num{font-size:1.25rem;}}
+
+/* ─── MODAL ─── */
+.modal-ov{
+  position:fixed;inset:0;
+  background:var(--modal-bg);backdrop-filter:blur(5px);
+  z-index:200;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+@media(min-width:640px){.modal-ov{align-items:center;}}
+.modal-ov.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--s1);
+  border:1px solid var(--border-hi);border-bottom:none;
+  width:100%;max-width:580px;
+  max-height:92vh;overflow-y:auto;
+  transform:translateY(50px);transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .25s;
+}
+@media(min-width:640px){.modal{border-bottom:1px solid var(--border-hi);max-height:88vh;}}
+.modal-ov.open .modal{transform:translateY(0);}
+.modal-hdr{
+  background:var(--s2);border-bottom:1px solid var(--border);
+  padding:18px 24px;position:sticky;top:0;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .25s;
+}
+.mdl-day-info{display:flex;flex-direction:column;gap:2px;}
+.mdl-day-num{
+  font-family:var(--ff-h);font-size:2rem;font-weight:700;
+  line-height:1;color:var(--accent);letter-spacing:.06em;
+}
+.mdl-phase-tag{font-family:var(--ff-h);font-size:.58rem;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;}
+.modal-close{
+  background:var(--s3);border:1px solid var(--border);
+  color:var(--t2);width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;transition:all .15s;flex-shrink:0;
+}
+.modal-close:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* Quote block */
+.modal-quote{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--s2),var(--bg));
+}
+.qmark{
+  font-family:var(--ff-h);font-size:3.5rem;line-height:.75;
+  color:var(--accent);opacity:.35;display:block;margin-bottom:4px;
+}
+.qtext{font-size:.92rem;font-style:italic;color:var(--t1);line-height:1.75;margin-bottom:10px;}
+.qauthor{
+  font-family:var(--ff-h);font-size:.62rem;letter-spacing:.22em;
+  color:var(--gold-hi);text-transform:uppercase;
+}
+
+/* Tasks */
+.modal-tasks{padding:22px 24px;}
+.tasks-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--ff-h);font-size:.65rem;letter-spacing:.2em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:14px;
+}
+.tasks-prog-txt{color:var(--t2);}
+.task-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:13px 0;border-bottom:1px solid var(--border);
+  transition:opacity .15s;
+  position:relative;
+}
+.task-item:last-child{border-bottom:none;}
+.task-item:hover .task-box{border-color:var(--accent);}
+.task-box{
+  width:20px;height:20px;border:2px solid var(--border-hi);flex-shrink:0;
+  margin-top:2px;display:flex;align-items:center;justify-content:center;
+  transition:all .14s;cursor:pointer;
+}
+.task-box.chk{background:var(--accent);border-color:var(--accent);}
+.task-box.chk::after{content:'✓';color:#fff;font-size:.72rem;font-weight:700;}
+.task-txt{font-size:.9rem;color:var(--t1);line-height:1.55;flex:1;transition:all .18s;cursor:pointer;}
+.task-item.done-item .task-txt{color:var(--t3);text-decoration:line-through;}
+
+/* Custom task badge */
+.custom-badge{
+  font-family:var(--ff-h);font-size:.45rem;letter-spacing:.15em;
+  color:var(--blue-hi);background:rgba(74,136,240,.1);
+  border:1px solid rgba(74,136,240,.25);padding:1px 5px;
+  text-transform:uppercase;flex-shrink:0;align-self:center;
+}
+
+/* Task delete btn */
+.task-del{
+  background:none;border:none;color:var(--t3);cursor:pointer;
+  font-size:.75rem;padding:2px 5px;flex-shrink:0;
+  opacity:0;transition:opacity .15s, color .15s;align-self:center;
+  line-height:1;
+}
+.task-item:hover .task-del{opacity:1;}
+.task-del:hover{color:var(--accent);}
+
+/* ─── CUSTOM TASKS SECTION ─── */
+.custom-tasks-section{
+  padding:0 24px 22px;
+  border-top:1px solid var(--border);
+}
+.custom-tasks-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0 12px;
+  font-family:var(--ff-h);font-size:.65rem;letter-spacing:.2em;
+  color:var(--t3);text-transform:uppercase;
+}
+.custom-tasks-hdr span:first-child{
+  display:flex;align-items:center;gap:8px;
+}
+.custom-count{
+  background:var(--accent-dim);border:1px solid rgba(232,64,10,.25);
+  color:var(--accent);font-size:.55rem;padding:1px 6px;
+}
+.add-task-row{
+  display:flex;gap:8px;align-items:stretch;
+}
+.add-task-input{
+  flex:1;background:var(--input-bg);border:1px solid var(--input-border);
+  color:var(--t1);font-family:var(--ff-b);font-size:.85rem;
+  padding:10px 14px;outline:none;
+  transition:border-color .15s;
+}
+.add-task-input::placeholder{color:var(--t3);}
+.add-task-input:focus{border-color:var(--accent);}
+.add-task-btn{
+  background:var(--accent);border:1px solid var(--accent);
+  color:#fff;font-family:var(--ff-h);font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:10px 16px;cursor:pointer;
+  transition:background .15s;white-space:nowrap;flex-shrink:0;
+}
+.add-task-btn:hover{background:var(--accent2);}
+
+/* Apply-to toggle */
+.apply-scope{
+  display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;
+}
+.scope-btn{
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--t3);font-family:var(--ff-h);font-size:.55rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 10px;cursor:pointer;transition:all .15s;
+}
+.scope-btn.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.scope-label{
+  font-family:var(--ff-h);font-size:.55rem;letter-spacing:.15em;
+  color:var(--t3);text-transform:uppercase;align-self:center;
+  padding-right:4px;flex-shrink:0;
+}
+
+/* Footer */
+.modal-ftr{
+  padding:14px 24px;border-top:1px solid var(--border);
+  background:var(--s2);display:flex;align-items:center;gap:12px;
+  transition:background .25s;
+}
+.done-msg{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--ff-h);font-size:.75rem;letter-spacing:.1em;
+  color:var(--green-hi);text-transform:uppercase;
+  opacity:0;transition:opacity .35s;
+}
+.done-msg.show{opacity:1;}
+.ftr-saved{font-family:var(--ff-h);font-size:.58rem;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-left:auto;}
+
+/* Reset btn */
+.reset-btn{
+  background:none;border:1px solid var(--border);color:var(--t3);
+  font-family:var(--ff-h);font-size:.55rem;letter-spacing:.15em;
+  text-transform:uppercase;padding:6px 10px;cursor:pointer;
+  transition:all .15s;margin-left:auto;
+}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border-hi);}
+
+/* Entry animation */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.day-card{animation:fadeUp .3s ease both;}
+
+/* Flame pulse */
+@keyframes flame{0%,100%{opacity:1}50%{opacity:.7}}
+.flame{animation:flame 1.3s ease-in-out infinite;display:inline-block;}
+
+/* ─── CONFIGURE MODAL ─── */
+.cfg-modal-ov{
+  position:fixed;inset:0;
+  background:var(--modal-bg);backdrop-filter:blur(5px);
+  z-index:300;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.cfg-modal-ov.open{opacity:1;pointer-events:all;}
+.cfg-modal{
+  background:var(--s1);border:1px solid var(--border-hi);
+  width:100%;max-width:500px;max-height:85vh;overflow-y:auto;
+  margin:16px;
+  transform:scale(.96);transition:transform .25s cubic-bezier(.34,1.56,.64,1), background .25s;
+}
+.cfg-modal-ov.open .cfg-modal{transform:scale(1);}
+.cfg-hdr{
+  background:var(--s2);border-bottom:1px solid var(--border);
+  padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--ff-h);
+}
+.cfg-hdr-title{font-size:1.1rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.cfg-hdr-title span{color:var(--accent);}
+.cfg-body{padding:22px 24px;}
+.cfg-desc{font-size:.82rem;color:var(--t2);margin-bottom:18px;line-height:1.6;}
+.cfg-section-label{
+  font-family:var(--ff-h);font-size:.6rem;letter-spacing:.2em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:8px;margin-top:16px;
+}
+.cfg-section-label:first-child{margin-top:0;}
+.cfg-presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.preset-btn{
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--t2);font-family:var(--ff-h);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:7px 12px;cursor:pointer;transition:all .15s;
+}
+.preset-btn:hover{border-color:var(--border-hi);color:var(--t1);}
+.cfg-input{
+  width:100%;background:var(--input-bg);border:1px solid var(--input-border);
+  color:var(--t1);font-family:var(--ff-b);font-size:.85rem;
+  padding:10px 14px;outline:none;transition:border-color .15s;
+  margin-bottom:8px;
+}
+.cfg-input:focus{border-color:var(--accent);}
+.cfg-input::placeholder{color:var(--t3);}
+.cfg-actions{display:flex;gap:8px;margin-top:18px;}
+.cfg-add-btn{
+  background:var(--accent);border:1px solid var(--accent);
+  color:#fff;font-family:var(--ff-h);font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:10px 20px;cursor:pointer;
+  transition:background .15s;
+}
+.cfg-add-btn:hover{background:var(--accent2);}
+.cfg-cancel-btn{
+  background:none;border:1px solid var(--border);
+  color:var(--t2);font-family:var(--ff-h);font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:10px 20px;cursor:pointer;
+  transition:all .15s;
+}
+.cfg-cancel-btn:hover{border-color:var(--border-hi);color:var(--t1);}
+
+/* Manage-all modal */
+.manage-btn{
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--t3);font-family:var(--ff-h);font-size:.55rem;letter-spacing:.15em;
+  text-transform:uppercase;padding:5px 10px;cursor:pointer;
+  transition:all .15s;
+}
+.manage-btn:hover{border-color:var(--blue-hi);color:var(--blue-hi);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo-wrap">
+      <div class="logo-main">100 <em>DAY</em> FORGE</div>
+      <div class="logo-sub">Discipline &nbsp;·&nbsp; Consistency &nbsp;·&nbsp; Identity</div>
+    </div>
+    <div class="hdr-progress">
+      <div class="prog-label">
+        <span>Overall Progress</span>
+        <b id="progPct">0%</b>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="progFill" style="width:0%"></div>
+      </div>
+    </div>
+    <!-- THEME TOGGLE -->
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">☀️</span>
+      <span id="themeLabel">LIGHT</span>
+    </button>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-in">
+    <div class="stat"><div class="stat-v or" id="stDay">1</div><div class="stat-l">Current Day</div></div>
+    <div class="stat"><div class="stat-v" id="stDone">0</div><div class="stat-l">Days Complete</div></div>
+    <div class="stat"><div class="stat-v go" id="stStreak">0 <span class="flame">🔥</span></div><div class="stat-l">Day Streak</div></div>
+    <div class="stat"><div class="stat-v bl" id="stTasks">0</div><div class="stat-l">Tasks Crushed</div></div>
+    <div class="stat"><div class="stat-v" id="stLeft">100</div><div class="stat-l">Days Remaining</div></div>
+  </div>
+</div>
+
+<!-- PHASE NAV -->
+<div class="phase-nav">
+  <button class="phase-btn active" data-ph="1" onclick="switchPhase(1)">
+    <span class="ph-num">I</span>
+    <span>IGNITION</span>
+    <span class="ph-range">Days 1–30</span>
+  </button>
+  <button class="phase-btn" data-ph="2" onclick="switchPhase(2)">
+    <span class="ph-num">II</span>
+    <span>FORGE</span>
+    <span class="ph-range">Days 31–60</span>
+  </button>
+  <button class="phase-btn" data-ph="3" onclick="switchPhase(3)">
+    <span class="ph-num">III</span>
+    <span>IRON</span>
+    <span class="ph-range">Days 61–100</span>
+  </button>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="phase-hdr">
+    <div class="phase-hdr-title" id="phTitle">PHASE I: IGNITION</div>
+    <div class="phase-hdr-sub" id="phSub">Build the unshakeable foundation</div>
+  </div>
+  <div class="day-grid" id="dayGrid"></div>
+</main>
+
+<!-- MODAL: DAY VIEW -->
+<div class="modal-ov" id="modalOv" onclick="closeMdlOuter(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <div class="mdl-day-info">
+        <div class="mdl-day-num" id="mdlNum">DAY 01</div>
+        <div class="mdl-phase-tag" id="mdlTag">PHASE I · IGNITION</div>
+      </div>
+      <button class="modal-close" onclick="closeMdl()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-quote">
+      <span class="qmark">"</span>
+      <div class="qtext" id="qText"></div>
+      <div class="qauthor" id="qAuth"></div>
+    </div>
+    <div class="modal-tasks">
+      <div class="tasks-hdr">
+        <span>Today's Objectives</span>
+        <span class="tasks-prog-txt" id="taskProg">0 / 5 Done</span>
+      </div>
+      <div id="taskList"></div>
+    </div>
+
+    <!-- CUSTOM TASKS SECTION -->
+    <div class="custom-tasks-section">
+      <div class="custom-tasks-hdr">
+        <span>
+          <span style="color:var(--blue-hi)">⊕</span>
+          Custom Checkboxes
+          <span class="custom-count" id="customCount">0</span>
+        </span>
+        <button class="manage-btn" onclick="openCfgModal()">+ ADD / MANAGE</button>
+      </div>
+      <div id="customTaskList"></div>
+    </div>
+
+    <div class="modal-ftr">
+      <div class="done-msg" id="doneMsg"><span>✓</span><span>Day Complete — Well Done!</span></div>
+      <div class="ftr-saved" id="syncStatus">⟳ Loading…</div>
+      <button class="reset-btn" onclick="if(confirm('Reset ALL progress? This cannot be undone.'))resetAll()">RESET</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURE CUSTOM TASKS -->
+<div class="cfg-modal-ov" id="cfgModalOv" onclick="closeCfgOuter(event)">
+  <div class="cfg-modal">
+    <div class="cfg-hdr">
+      <div class="cfg-hdr-title">Add <span>Custom</span> Checkbox</div>
+      <button class="modal-close" onclick="closeCfgModal()">✕</button>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-desc">Create your own habit or task checkboxes. Choose whether to add it just for this day, or apply it across a range of days.</div>
+
+      <div class="cfg-section-label">Quick Presets</div>
+      <div class="cfg-presets" id="cfgPresets"></div>
+
+      <div class="cfg-section-label">Custom Task Name</div>
+      <input class="cfg-input" id="cfgTaskName" placeholder="e.g. Meditate 10 minutes, No sugar, Cold plunge…" maxlength="80" />
+
+      <div class="cfg-section-label">Apply To</div>
+      <div class="apply-scope" id="applyScope">
+        <span class="scope-label">Scope:</span>
+        <button class="scope-btn active" data-scope="day" onclick="setScope(this,'day')">This Day Only</button>
+        <button class="scope-btn" data-scope="phase" onclick="setScope(this,'phase')">This Phase</button>
+        <button class="scope-btn" data-scope="all" onclick="setScope(this,'all')">All 100 Days</button>
+        <button class="scope-btn" data-scope="range" onclick="setScope(this,'range')">Day Range</button>
+      </div>
+      <div id="rangeInputs" style="display:none;margin-top:10px;display:none;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input class="cfg-input" id="rangeFrom" placeholder="From day (1)" type="number" min="1" max="100" style="width:120px;margin-bottom:0;">
+          <span style="color:var(--t3);font-family:var(--ff-h);font-size:.7rem;">TO</span>
+          <input class="cfg-input" id="rangeTo" placeholder="To day (100)" type="number" min="1" max="100" style="width:120px;margin-bottom:0;">
+        </div>
+      </div>
+
+      <div class="cfg-actions">
+        <button class="cfg-add-btn" onclick="addCustomTask()">ADD CHECKBOX</button>
+        <button class="cfg-cancel-btn" onclick="closeCfgModal()">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const PHASES = [
+  {id:1, name:"IGNITION", sub:"Build the unshakeable foundation",    range:[1,30]},
+  {id:2, name:"FORGE",    sub:"Push beyond your perceived limits",    range:[31,60]},
+  {id:3, name:"IRON",     sub:"Cement the identity. Become the man.", range:[61,100]},
+];
+const ROMANS = ["I","II","III"];
+
+const TASKS = {
+  1:[
+    ["Wake at 6 AM — no snooze, no negotiation","Drink 2 L of water throughout the day","Complete a 20-minute bodyweight workout","Read for 20 minutes — no skimming","Zero social media before noon"],
+    ["Cold shower — hold it for 30 seconds","Rack up 7,000 steps today","Write 3 things you're genuinely grateful for","No junk food — clean fuel only","Lights out by 10:30 PM tonight"],
+    ["Plan tomorrow's top 3 tasks before bed","Do one 45-minute focused work session, no distractions","10 minutes of stretching or mobility work","Call or message someone you care about","Put the screen away 1 hour before sleep"],
+    ["6 AM wake-up — drink water before coffee","30-min workout: push past last session's numbers","Read 15 pages of something that makes you grow","No alcohol, no processed food — clean 24 hours","5-minute journaling before you sleep"],
+    ["5-minute meditation — sit, breathe, nothing else","Walk outside for 10 minutes, phone stays home","Learn one new thing and write it down","Eat protein with every meal today","Tidy your workspace before you start work"],
+    ["Rise at 6 AM and hydrate immediately","20 push-ups + 20 squats + 20 sit-ups upon waking","Read and take notes on 10 pages","Do the task you have been putting off the most","7 or more hours of sleep — non-negotiable"],
+  ],
+  2:[
+    ["Rise at 5:30 AM — earn the early hours","45-min workout — more intensity than last week","Two 45-min distraction-free deep work blocks","Read 30 pages of your current book","Zero phone in the first and last 30 min of your day"],
+    ["Cold shower — 60 seconds, full cold","Hit 10,000 steps before the day ends","Write 200 words — journal, project, or idea","Track everything you eat today — awareness is power","Prep tomorrow's full schedule before midnight"],
+    ["Do a weekly review: wins, losses, adjustments","Practice a specific skill for 45 dedicated minutes","Reach out to one person who is ahead of you","Write down your 100-day goals and read them aloud","One decision today that scared you a little — make it"],
+    ["5:30 AM rise — the world is quiet; own it","45-min cardio + strength circuit, no skipping","Hold yourself accountable: did you keep every promise?","Read and extract one action you will take today","Sleep by 10 PM — elite performers protect recovery"],
+    ["15-minute meditation — build the focus muscle","Walk 20 min outdoors, leave the phone behind","Ship something: code, writing, a plan — progress over perfect","Permanently eliminate one recurring distraction","Cook your own high-protein meal today"],
+    ["5:30 AM start — first task completed within 15 min","Attempt a new personal best in your workout","Learn from someone ahead of you — book, video, or call","Help someone with zero expectation of return","Write a brief review of your week before sleep"],
+  ],
+  3:[
+    ["5 AM rise — identity-level. Your body knows the drill now","1-hour physical training — full, uncompromising effort","Two 90-minute deep work blocks with zero interruptions","Read 40 pages — extract one insight to act on today","No complaints, no excuses, no victim language — all day"],
+    ["Cold shower — 2 full minutes, completely cold","Hit 12,000 steps — this is non-negotiable now","Create something today: write, build, design, record","Cut one habit or routine that no longer serves your goals","Write a letter to your future self — where will you be?"],
+    ["Optimize one system in your life — make it more efficient","Review your 100-day goals: are they still the right goals?","Teach someone something you have learned on this journey","Lead by example in every single interaction today","Document one major lesson you want to keep forever"],
+    ["5 AM — no negotiation, no alarm snooze, identity locked","Go beyond what you think you are capable of physically","One decision today that your future self will thank you for","Complete your most critical task before opening any messages","In bed by 9:30 PM — recovery is part of the training"],
+    ["20-minute silent meditation — stillness is strength","Walk 5 km and think — no podcasts, no input, just thought","Create 3× more than you consume today","Eliminate one thing from your life: digital, physical, or mental","Write it: 'I am the man who…' — complete the sentence fully"],
+    ["5 AM — automatic, instinctual, who you are now","Physical challenge: a new peak — further than ever before","Deep work + share what you built or learned with the world","Connect with one person at genuine depth — no small talk","Write your identity statement for Day 100"],
+  ],
+};
+
+const QUOTES = [
+  {t:"Discipline equals freedom.",a:"Jocko Willink"},
+  {t:"Do what is hard and your life will be easy.",a:"Naval Ravikant"},
+  {t:"The impediment to action advances action. What stands in the way becomes the way.",a:"Marcus Aurelius"},
+  {t:"Don't stop when you're tired. Stop when you're done.",a:"Unknown"},
+  {t:"Hard choices, easy life. Easy choices, hard life.",a:"Jerzy Gregorek"},
+  {t:"You have power over your mind, not outside events. Realize this and you will find strength.",a:"Marcus Aurelius"},
+  {t:"It is not the mountain we conquer, but ourselves.",a:"Sir Edmund Hillary"},
+  {t:"We suffer more in imagination than in reality.",a:"Seneca"},
+  {t:"The cave you fear to enter holds the treasure you seek.",a:"Joseph Campbell"},
+  {t:"Champions aren't made in gyms. Champions are made from something inside them.",a:"Muhammad Ali"},
+  {t:"What you do every day matters more than what you do once in a while.",a:"Gretchen Rubin"},
+  {t:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+  {t:"Success is not final. Failure is not fatal. It is the courage to continue that counts.",a:"Winston Churchill"},
+  {t:"A man who masters himself can master anything.",a:"Anonymous"},
+  {t:"Strength does not come from winning. Your struggles develop your strengths.",a:"Arnold Schwarzenegger"},
+  {t:"Waste no more time arguing what a good man should be. Be one.",a:"Marcus Aurelius"},
+  {t:"If you're going through hell, keep going.",a:"Winston Churchill"},
+  {t:"One day or day one. You decide.",a:"Paulo Coelho"},
+  {t:"Small daily improvements over time lead to stunning results.",a:"Robin Sharma"},
+  {t:"Be so good they can't ignore you.",a:"Steve Martin"},
+  {t:"Iron sharpens iron; so one man sharpens another.",a:"Proverbs 27:17"},
+  {t:"The fight is won or lost far away from witnesses.",a:"Muhammad Ali"},
+  {t:"Difficulties strengthen the mind, as labor does the body.",a:"Seneca"},
+  {t:"No man is free who is not master of himself.",a:"Epictetus"},
+  {t:"Excellence is never an accident. It is always the result of high intention.",a:"Aristotle"},
+  {t:"It does not matter how slowly you go as long as you do not stop.",a:"Confucius"},
+  {t:"Either you run the day or the day runs you.",a:"Jim Rohn"},
+  {t:"You don't rise to the level of your goals. You fall to the level of your systems.",a:"James Clear"},
+  {t:"Every action you take is a vote for the type of person you wish to become.",a:"James Clear"},
+  {t:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.",a:"Aristotle"},
+  {t:"If it doesn't challenge you, it won't change you.",a:"Fred DeVito"},
+  {t:"Be the man you needed when you were younger.",a:"Thema Davis"},
+  {t:"Obsessed is a word the lazy use to describe the dedicated.",a:"Anonymous"},
+  {t:"Tomorrow belongs to those who prepare for it today.",a:"Malcolm X"},
+  {t:"Don't wish it were easier. Wish you were better.",a:"Jim Rohn"},
+  {t:"Courage is not the absence of fear.",a:"Ambrose Redmoon"},
+  {t:"Push yourself, because no one else is going to do it for you.",a:"Anonymous"},
+  {t:"In the middle of every difficulty lies opportunity.",a:"Albert Einstein"},
+  {t:"Believe you can and you're halfway there.",a:"Theodore Roosevelt"},
+  {t:"The man who moves a mountain begins by carrying away small stones.",a:"Confucius"},
+  {t:"Endure. In enduring, grow strong.",a:"Darryl Anka"},
+  {t:"There are no shortcuts to any place worth going.",a:"Beverly Sills"},
+  {t:"The disciplined man is consistent even when motivation has abandoned him.",a:"Unknown"},
+  {t:"No one who achieved greatness ever did so by choosing comfort.",a:"Unknown"},
+  {t:"Fall seven times. Stand up eight.",a:"Japanese Proverb"},
+  {t:"Success is the sum of small efforts, repeated day in and day out.",a:"Robert Collier"},
+  {t:"The real workout starts when you want to stop.",a:"Anonymous"},
+  {t:"The body achieves what the mind believes.",a:"Napoleon Hill"},
+  {t:"Mastery is a function of time and intense focus applied to a field.",a:"Robert Greene"},
+  {t:"Every master was once a disaster.",a:"T. Harv Eker"},
+  {t:"A river cuts through rock not because of its power, but its persistence.",a:"Jim Watkins"},
+  {t:"I am not a product of my circumstances. I am a product of my decisions.",a:"Stephen Covey"},
+  {t:"Pain is temporary. Quitting lasts forever.",a:"Lance Armstrong"},
+  {t:"Hard work beats talent when talent doesn't work hard.",a:"Tim Notke"},
+  {t:"Your future is created by what you do today, not tomorrow.",a:"Robert Kiyosaki"},
+  {t:"100 days from now you will thank yourself for starting today.",a:"Anonymous"},
+  {t:"Champions train. Legends sustain.",a:"Anonymous"},
+  {t:"Forged in fire. Tempered by time. Unbreakable.",a:"Anonymous"},
+  {t:"On day 100, you will not regret a single day of sacrifice. Not one.",a:"Anonymous"},
+  {t:"This is the forge. Heat makes steel. Heat makes you.",a:"Anonymous"},
+  {t:"Stay the course. The world bends to those who do not break.",a:"Anonymous"},
+];
+
+const CUSTOM_PRESETS = [
+  "Meditate 10 min","No sugar today","Cold plunge","Gratitude journal",
+  "No phone before 9 AM","10,000 steps","Drink 3 L water","No alcohol",
+  "Stretch 10 min","Write 500 words","Learn 5 new words","Meal prep",
+  "No late-night scrolling","Study 1 hour","No caffeine after 2 PM",
+  "Practice breathing","Read 10 pages","Inbox zero","1 hour of deep work",
+  "Protein goal hit","Go to bed by 10 PM","Sunlight first 30 min",
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+
+let S = {
+  startDate: null,
+  done: {},           // "day_taskIdx": true  (built-in)
+  customDone: {},     // "day_cid": true       (custom)
+  customTasks: {},    // { cid: { text, days:[1,2,...] } }
+  phase: 1,
+  openDay: null,
+  theme: 'dark',
+  cfgScope: 'day',
+  nextCid: 1,
+};
+
+// ═══════════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════════
+const SB_URL = 'https://rsjwsymnoahjnwbzcuty.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzandzeW1ub2Foam53YnpjdXR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTcxNjgsImV4cCI6MjA5MTczMzE2OH0.ywAteI7vOkPgpCzJKEjhNkiBAs9TGB2ngHSW2JLG974';
+const SB_HEADERS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const ROW_ID = 'user_1';
+
+let _saveTimer = null;
+
+function setSyncStatus(state){
+  const el = document.getElementById('syncStatus');
+  if(!el) return;
+  if(state==='saving') { el.textContent='⟳ Saving…';   el.style.color='var(--gold-hi)'; }
+  else if(state==='saved') { el.textContent='✓ Synced';  el.style.color='var(--green-hi)'; }
+  else if(state==='offline'){ el.textContent='⚠ Offline (local)'; el.style.color='var(--accent)'; }
+  else if(state==='loading'){ el.textContent='⟳ Loading…'; el.style.color='var(--t2)'; }
+}
+
+function getPayload(){
+  return {
+    startDate:S.startDate, done:S.done,
+    customDone:S.customDone, customTasks:S.customTasks,
+    phase:S.phase, theme:S.theme, nextCid:S.nextCid
+  };
+}
+
+function applyPayload(p){
+  S.startDate  = p.startDate  || new Date().toISOString().split('T')[0];
+  S.done       = p.done       || {};
+  S.customDone = p.customDone || {};
+  S.customTasks= p.customTasks|| {};
+  S.phase      = p.phase      || 1;
+  S.theme      = p.theme      || 'dark';
+  S.nextCid    = p.nextCid    || 1;
+}
+
+async function loadFromSupabase(){
+  setSyncStatus('loading');
+  try{
+    const res = await fetch(`${SB_URL}/rest/v1/forge_progress?id=eq.${ROW_ID}&select=data`, {headers:SB_HEADERS});
+    if(!res.ok) throw new Error('fetch failed');
+    const rows = await res.json();
+    if(rows.length > 0){
+      applyPayload(rows[0].data);
+      // also mirror to localStorage as offline fallback
+      localStorage.setItem('forge100v2', JSON.stringify(rows[0].data));
+    } else {
+      // No cloud row yet — try local fallback
+      const raw = localStorage.getItem('forge100v2');
+      if(raw) applyPayload(JSON.parse(raw));
+      else S.startDate = new Date().toISOString().split('T')[0];
+      // push initial row to cloud
+      await pushToSupabase();
+    }
+    setSyncStatus('saved');
+  } catch(e){
+    // Offline — fall back to localStorage
+    const raw = localStorage.getItem('forge100v2');
+    if(raw){ try{ applyPayload(JSON.parse(raw)); }catch(_){} }
+    if(!S.startDate) S.startDate = new Date().toISOString().split('T')[0];
+    setSyncStatus('offline');
+  }
+}
+
+async function pushToSupabase(){
+  const payload = getPayload();
+  try{
+    const res = await fetch(`${SB_URL}/rest/v1/forge_progress`, {
+      method:'POST',
+      headers:{...SB_HEADERS, 'Prefer':'resolution=merge-duplicates'},
+      body: JSON.stringify({id: ROW_ID, data: payload, updated_at: new Date().toISOString()})
+    });
+    if(!res.ok) throw new Error('push failed');
+    localStorage.setItem('forge100v2', JSON.stringify(payload));
+    setSyncStatus('saved');
+  } catch(e){
+    localStorage.setItem('forge100v2', JSON.stringify(payload));
+    setSyncStatus('offline');
+  }
+}
+
+function load(){
+  // Sync status shown while async load runs
+  // (loadFromSupabase is called in init)
+}
+
+function save(){
+  // Always write to localStorage immediately for snappy UI
+  localStorage.setItem('forge100v2', JSON.stringify(getPayload()));
+  setSyncStatus('saving');
+  // Debounce cloud writes — batch rapid clicks into one request
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(()=>pushToSupabase(), 1200);
+}
+
+// ═══════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const icon=document.getElementById('themeIcon');
+  const lbl=document.getElementById('themeLabel');
+  if(t==='dark'){icon.textContent='☀️';lbl.textContent='LIGHT';}
+  else{icon.textContent='🌙';lbl.textContent='DARK';}
+}
+
+function toggleTheme(){
+  S.theme= S.theme==='dark'?'light':'dark';
+  applyTheme(S.theme);
+  save();
+}
+
+// ═══════════════════════════════════════════
+// COMPUTED
+// ═══════════════════════════════════════════
+
+function today(){
+  const s=new Date(S.startDate), n=new Date();
+  return Math.min(Math.max(Math.floor((n-s)/(864e5))+1,1),100);
+}
+
+function phaseOf(d){return d<=30?1:d<=60?2:3;}
+
+function tasksFor(d){
+  const ph=phaseOf(d);
+  const sets=TASKS[ph];
+  return sets[(d-1)%sets.length];
+}
+
+function quoteFor(d){return QUOTES[(d-1)%QUOTES.length];}
+
+function customTasksFor(d){
+  return Object.entries(S.customTasks)
+    .filter(([,v])=>v.days.includes(d))
+    .map(([cid,v])=>({cid,text:v.text}));
+}
+
+function isBuiltInDone(d){return tasksFor(d).every((_,i)=>S.done[`${d}_${i}`]);}
+function isCustomAllDone(d){
+  const ct=customTasksFor(d);
+  return ct.length===0 || ct.every(({cid})=>S.customDone[`${d}_${cid}`]);
+}
+function isDone(d){return isBuiltInDone(d) && isCustomAllDone(d);}
+
+function doneCount(d){
+  const bi=tasksFor(d).filter((_,i)=>S.done[`${d}_${i}`]).length;
+  const cu=customTasksFor(d).filter(({cid})=>S.customDone[`${d}_${cid}`]).length;
+  return bi+cu;
+}
+function totalTaskCount(d){ return tasksFor(d).length + customTasksFor(d).length; }
+
+function completedDays(){let c=0;for(let d=1;d<=100;d++)if(isDone(d))c++;return c;}
+
+function totalTasks(){
+  return Object.values(S.done).filter(Boolean).length +
+         Object.values(S.customDone).filter(Boolean).length;
+}
+
+function streak(){
+  const t=today();let s=0;
+  for(let d=t;d>=1;d--){if(isDone(d))s++;else if(d<t)break;}
+  return s;
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+
+function updateStats(){
+  const t=today(), cd=completedDays(), sr=streak(), tt=totalTasks();
+  document.getElementById('stDay').textContent=t;
+  document.getElementById('stDone').textContent=cd;
+  document.getElementById('stStreak').innerHTML=`${sr} <span class="flame">🔥</span>`;
+  document.getElementById('stTasks').textContent=tt;
+  document.getElementById('stLeft').textContent=100-cd;
+  const pct=Math.round(cd/100*100);
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+}
+
+function switchPhase(ph){
+  S.phase=ph;save();renderPhase(ph);
+}
+
+function renderPhase(ph){
+  const p=PHASES[ph-1];
+  document.getElementById('phTitle').textContent=`PHASE ${ROMANS[ph-1]}: ${p.name}`;
+  document.getElementById('phSub').textContent=p.sub;
+  document.querySelectorAll('.phase-btn').forEach(b=>{
+    b.classList.toggle('active',parseInt(b.dataset.ph)===ph);
+  });
+
+  const grid=document.getElementById('dayGrid');
+  grid.innerHTML='';
+  const t=today();
+  const [s,e]=p.range;
+
+  for(let d=s;d<=e;d++){
+    const isToday=d===t, complete=isDone(d), future=d>t;
+    const dc=doneCount(d), tc=totalTaskCount(d);
+    const builtInCount=tasksFor(d).length;
+    let cls='day-card';
+    if(complete) cls+=' dc-complete';
+    else if(isToday) cls+=' dc-today';
+    else if(future) cls+=' dc-future';
+
+    const dots=Array.from({length:tc},(_,i)=>{
+      const isCustom=i>=builtInCount;
+      const done_=isCustom
+        ? S.customDone[`${d}_${customTasksFor(d)[i-builtInCount]?.cid}`]
+        : S.done[`${d}_${i}`];
+      return `<div class="dot${isCustom?' custom':''}${done_?' done':''}"></div>`;
+    }).join('');
+
+    const card=document.createElement('div');
+    card.className=cls;
+    card.style.animationDelay=`${(d-s)*0.012}s`;
+    card.onclick=()=>openDay(d);
+    card.innerHTML=`
+      ${isToday?'<div class="today-badge">TODAY</div>':''}
+      <div class="day-num">${String(d).padStart(2,'0')}</div>
+      <div class="card-foot">
+        <div class="dots">${dots}</div>
+        <div class="day-chk">✓</div>
+      </div>`;
+    grid.appendChild(card);
+  }
+
+  if(t>=s && t<=e){
+    setTimeout(()=>{
+      const cards=grid.querySelectorAll('.day-card');
+      const idx=t-s;
+      if(cards[idx]) cards[idx].scrollIntoView({behavior:'smooth',block:'nearest'});
+    },100);
+  }
+}
+
+function openDay(d){
+  S.openDay=d;
+  const ph=phaseOf(d), q=quoteFor(d), tasks=tasksFor(d);
+  document.getElementById('mdlNum').textContent=`DAY ${String(d).padStart(2,'0')}`;
+  document.getElementById('mdlTag').textContent=`PHASE ${ROMANS[ph-1]} · ${PHASES[ph-1].name}`;
+  document.getElementById('qText').textContent=q.t;
+  document.getElementById('qAuth').textContent=`— ${q.a}`;
+  renderTaskList(d,tasks);
+  renderCustomTaskList(d);
+  document.getElementById('modalOv').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function renderTaskList(d,tasks){
+  const dc=doneCount(d), tc=totalTaskCount(d);
+  document.getElementById('taskProg').textContent=`${dc} / ${tc} Done`;
+  document.getElementById('doneMsg').classList.toggle('show',dc===tc && tc>0);
+  document.getElementById('taskList').innerHTML=tasks.map((t,i)=>{
+    const k=`${d}_${i}`, chk=S.done[k];
+    return `<div class="task-item${chk?' done-item':''}">
+      <div class="task-box${chk?' chk':''}" onclick="toggleTask(${d},${i})"></div>
+      <div class="task-txt" onclick="toggleTask(${d},${i})">${t}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCustomTaskList(d){
+  const ct=customTasksFor(d);
+  document.getElementById('customCount').textContent=ct.length;
+  document.getElementById('customTaskList').innerHTML=ct.map(({cid,text})=>{
+    const k=`${d}_${cid}`, chk=S.customDone[k];
+    return `<div class="task-item${chk?' done-item':''}">
+      <div class="task-box${chk?' chk':''}" onclick="toggleCustomTask(${d},'${cid}')"></div>
+      <div class="task-txt" onclick="toggleCustomTask(${d},'${cid}')">${text}</div>
+      <span class="custom-badge">CUSTOM</span>
+      <button class="task-del" onclick="deleteCustomTask('${cid}',${d})" title="Delete this custom task">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function toggleTask(d,i){
+  const k=`${d}_${i}`;
+  S.done[k]=!S.done[k];
+  save();
+  renderTaskList(d,tasksFor(d));
+  renderCustomTaskList(d);
+  updateStats();
+  updateCard(d);
+}
+
+function toggleCustomTask(d,cid){
+  const k=`${d}_${cid}`;
+  S.customDone[k]=!S.customDone[k];
+  save();
+  renderTaskList(d,tasksFor(d));
+  renderCustomTaskList(d);
+  updateStats();
+  updateCard(d);
+}
+
+function deleteCustomTask(cid, currentDay){
+  if(!confirm('Remove this custom task? This will delete it from all days it was applied to.')) return;
+  delete S.customTasks[cid];
+  // clean up done state
+  for(let d=1;d<=100;d++) delete S.customDone[`${d}_${cid}`];
+  save();
+  renderTaskList(currentDay, tasksFor(currentDay));
+  renderCustomTaskList(currentDay);
+  updateStats();
+  updateCard(currentDay);
+}
+
+function updateCard(d){
+  const ph=phaseOf(d);
+  if(ph!==S.phase) return;
+  const p=PHASES[ph-1];
+  const idx=d-p.range[0];
+  const cards=document.getElementById('dayGrid').querySelectorAll('.day-card');
+  if(!cards[idx]) return;
+  const card=cards[idx];
+  const builtInCount=tasksFor(d).length;
+  const ct=customTasksFor(d);
+  const tc=builtInCount+ct.length;
+  const dots=card.querySelector('.dots');
+  const chkEl=card.querySelector('.day-chk');
+  if(dots) dots.innerHTML=Array.from({length:tc},(_,i)=>{
+    const isCustom=i>=builtInCount;
+    const done_=isCustom
+      ? S.customDone[`${d}_${ct[i-builtInCount]?.cid}`]
+      : S.done[`${d}_${i}`];
+    return `<div class="dot${isCustom?' custom':''}${done_?' done':''}"></div>`;
+  }).join('');
+  const complete=isDone(d);
+  card.classList.toggle('dc-complete',complete);
+  if(chkEl) chkEl.style.display=complete?'block':'none';
+}
+
+// ═══════════════════════════════════════════
+// CONFIGURE CUSTOM TASKS
+// ═══════════════════════════════════════════
+
+let _cfgScope='day';
+
+function setScope(btn,scope){
+  _cfgScope=scope;
+  document.querySelectorAll('.scope-btn').forEach(b=>b.classList.toggle('active',b===btn));
+  const ri=document.getElementById('rangeInputs');
+  ri.style.display=scope==='range'?'block':'none';
+}
+
+function openCfgModal(){
+  // Populate presets
+  const pc=document.getElementById('cfgPresets');
+  pc.innerHTML=CUSTOM_PRESETS.map(p=>
+    `<button class="preset-btn" onclick="usePreset('${p.replace(/'/g,"\\'")}')">
+      ${p}
+    </button>`
+  ).join('');
+  document.getElementById('cfgTaskName').value='';
+  // Reset scope to day
+  _cfgScope='day';
+  document.querySelectorAll('.scope-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.scope==='day');
+  });
+  document.getElementById('rangeInputs').style.display='none';
+  document.getElementById('cfgModalOv').classList.add('open');
+}
+
+function closeCfgModal(){
+  document.getElementById('cfgModalOv').classList.remove('open');
+}
+
+function closeCfgOuter(e){
+  if(e.target===document.getElementById('cfgModalOv')) closeCfgModal();
+}
+
+function usePreset(name){
+  document.getElementById('cfgTaskName').value=name;
+  document.getElementById('cfgTaskName').focus();
+}
+
+function addCustomTask(){
+  const text=document.getElementById('cfgTaskName').value.trim();
+  if(!text){alert('Please enter a task name.');return;}
+
+  const d=S.openDay;
+  let days=[];
+
+  if(_cfgScope==='day'){
+    days=[d];
+  } else if(_cfgScope==='all'){
+    days=Array.from({length:100},(_,i)=>i+1);
+  } else if(_cfgScope==='phase'){
+    const ph=phaseOf(d);
+    const [s,e]=PHASES[ph-1].range;
+    days=Array.from({length:e-s+1},(_,i)=>s+i);
+  } else if(_cfgScope==='range'){
+    const from=parseInt(document.getElementById('rangeFrom').value)||1;
+    const to=parseInt(document.getElementById('rangeTo').value)||100;
+    if(from<1||to>100||from>to){alert('Invalid range. Use 1–100.');return;}
+    days=Array.from({length:to-from+1},(_,i)=>from+i);
+  }
+
+  const cid=`c${S.nextCid++}`;
+  S.customTasks[cid]={text, days};
+  save();
+  closeCfgModal();
+  renderTaskList(d, tasksFor(d));
+  renderCustomTaskList(d);
+  updateStats();
+  // Refresh cards that are in current view
+  days.forEach(day=>updateCard(day));
+}
+
+// ═══════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════
+
+function resetAll(){
+  S.done={};S.customDone={};S.customTasks={};S.nextCid=1;
+  S.startDate=new Date().toISOString().split('T')[0];
+  save();
+  closeMdl();
+  updateStats();
+  renderPhase(S.phase);
+}
+
+function closeMdlOuter(e){if(e.target===document.getElementById('modalOv'))closeMdl();}
+function closeMdl(){
+  document.getElementById('modalOv').classList.remove('open');
+  document.body.style.overflow='';
+  S.openDay=null;
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+
+async function init(){
+  // Apply saved theme instantly from localStorage to avoid flash
+  try{
+    const raw=localStorage.getItem('forge100v2');
+    if(raw){ const p=JSON.parse(raw); S.theme=p.theme||'dark'; }
+  }catch(_){}
+  applyTheme(S.theme);
+
+  // Show loading state
+  document.getElementById('dayGrid').innerHTML='<div style="color:var(--t3);font-family:var(--ff-h);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;padding:30px 0;">⟳ Loading your progress…</div>';
+
+  await loadFromSupabase();
+
+  applyTheme(S.theme);
+  const todayPhase=phaseOf(today());
+  S.phase=todayPhase;
+  updateStats();
+  renderPhase(S.phase);
+}
+
+init();
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('cfgModalOv').classList.contains('open')) closeCfgModal();
+    else closeMdl();
+  }
+});
+</script>
+</body>
+</html>
